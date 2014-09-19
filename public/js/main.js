@@ -3,7 +3,7 @@
 //var url = 'http://api.wunderground.com/api/1df22023c66b0e1d/forecast10day/geolookup/conditions/q/CA/San_Jose.json';
 var weather;
 //var baseurl = 'http://api.wunderground.com/api/1df22023c66b0e1d/hourly10day/geolookup/conditions/q/TX/Austin.json';  
-var texasHourly = 'http://api.wunderground.com/api/1df22023c66b0e1d/hourly10day/geolookup/conditions/q/TX/Austin.json'; 
+var txHourly = 'http://api.wunderground.com/api/1df22023c66b0e1d/hourly10day/geolookup/conditions/q/TX/Austin.json'; 
 var nyHourly = 'http://api.wunderground.com/api/1df22023c66b0e1d/hourly10day/geolookup/conditions/q/NY/Rochester.json'; 
 var caHourly = 'http://api.wunderground.com/api/1df22023c66b0e1d/hourly10day/geolookup/conditions/q/CA/San_Jose.json'; 
 
@@ -221,6 +221,7 @@ $('#temp').change(function() {
 $('#sj').on('click',function(e){
 	e.preventDefault();
 	changeCity(caHourly);
+
 	//alert('sj');
 });
 
@@ -264,6 +265,9 @@ $.ajax({
 });
 
 function changeCity(url){
+	normalData = [];
+	chartData =[];
+
 $.ajax({
         async: true,
         url: url,
@@ -279,9 +283,15 @@ $.ajax({
             	precip.push(obj.wx);
             });
             //alert('worked');
-            createData(true,true,true);
+            createData($('#temp').is(':checked'), $('#precip').is(':checked'),$('#humid').is(':checked'));
+        	
+            chartData = chartData.splice(240,240);
+            normalData = normalData.splice(240,240);
+            /*normalData.unshift(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+            chartData.unshift(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
             normalData.unshift(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
             chartData.unshift(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+            */
             createTable(true,true,true);
            }
     });
