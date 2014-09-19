@@ -37,7 +37,10 @@ function checkNeg(people){
  else 
  	return false;
 }
-
+function checkResetPeople(people){
+	if (people<0)
+		people = 0;
+}
 var people_count_weekday = [0,0,0,0,0,0,0,0,20,30,40,30,40,40,85,100,120,125,80,50,0,0,0];
 var people_count_weekend = [0,0,0,0,0,0,0,0,50,50,60,70,70,80,85,100,120,150,160,50,0,0,0];
 
@@ -67,8 +70,9 @@ function count_people(temp, humidity, precip, people_count,time){
     
     /* Precipitation */
     if(precip != null && !checkNeg(people)){
-	    if (precip < 30){
-	        people = people;
+	    if (precip === 'Scattered Thunderstorms'){
+	        people = people-30;
+	        
 	    }
 	    else if (precip > 30 && precip < 50){   
 	        people = people - 5;
@@ -97,27 +101,30 @@ function count_people(temp, humidity, precip, people_count,time){
 	        people = people - 15;
 	    }
     }
+    checkResetPeople(people);
     return people;
 }
 
 var normalData = [];
 var chartData = [];  // The data were going to use to build the chart
 var temp = [];
+var precip = [];
 var humidity = [];
-
-function createData(){
+function createData(t,p,h){
+	normalData = [];
+	chartData =[];
 	var startTime = new Date().getHours();
 	_.each(temp,function(obj,idx){
 		startTime++;
 		startTime = startTime % 24;
-		chartData.push(count_people(temp[idx], humidity[idx], null, people_count_weekday,startTime));
+		chartData.push(count_people((t)? temp[idx]: null, (h)? humidity[idx]: null, (p)? precip[idx] : null, people_count_weekday,startTime));
        	normalData.push(count_people(null,null,null,people_count_weekday,startTime));
 				
 	});
 
 }
 
-function createTable(){
+function createTable(t,p,h){
 
 	var d = new Date();
 	var m = d.getMonth();
@@ -187,9 +194,22 @@ function createTable(){
         }]
     });
 }
-$(function () {
+$(document).ready(function () {
 console.log(JSON.stringify(restCall(hourly),undefined,2));
+$('#humid').change(function() {
+        createData($('#temp').is(':checked'), $('#precip').is(':checked'),$('#humid').is(':checked'));
+        createTable();
+});
+$('#precip').on('click',function() {
+        createData($('#temp').is(':checked'), $('#precip').is(':checked'),$('#humid').is(':checked'));
+        createTable();
+});
+$('#temp').change(function() {
+        createData($('#temp').is(':checked'), $('#precip').is(':checked'),$('#humid').is(':checked'));
+        createTable();
+});
 
+//});
 /*get the hourly forecast */
 $.ajax({
         async: true,
@@ -203,10 +223,11 @@ $.ajax({
             _.each(data.hourly_forecast,function(obj,idx){
             	temp.push(obj.temp.english);
             	humidity.push(obj.humidity);
+            	precip.push(obj.wx);
             });
             alert('worked');
-            createData();
-            createTable();
+            createData(true,true,true);
+            createTable(true,true,true);
            }
     });
 
