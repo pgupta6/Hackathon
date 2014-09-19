@@ -24,7 +24,7 @@ function restCall(url){
         {
             weather = data;
         	console.log(data);
-            alert('worked');
+           //alert('worked');
             d = data;
         }
     });
@@ -151,7 +151,7 @@ function createTable(t,p,h){
         },
         yAxis: {
             title: {
-                text: 'Demands'
+                text: 'People'
             }
         },
         legend: {
@@ -225,7 +225,7 @@ $.ajax({
             	humidity.push(obj.humidity);
             	precip.push(obj.wx);
             });
-            alert('worked');
+            //alert('worked');
             createData(true,true,true);
             createTable(true,true,true);
            }
