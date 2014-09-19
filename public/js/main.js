@@ -15,6 +15,103 @@ var weather;
     });
 
 
+
+
+var people_count_weekday [20,20,30,40,30,40,40,85,100,120,125,80,50];
+var people_count_weekend [50,50,60,70,70,80,85,100,120,150,160,100,50];
+
+
+
+
+
+
+function count_people(temp, humidity, precip, people_count,time){
+    
+    var people = people_count[time];
+    
+    
+    
+    /* Temperature */
+    if (temp < 60){
+        
+        people = people - 20;
+    }
+    
+    if (temp > 60 && temp < 70){
+        
+        people = people;
+    }
+    else if (temp > 70 && temp < 80){
+        people = people + 20;
+
+    }
+    else if (temp > 80 && temp < 90){
+        people = people + 20;
+        
+    }
+    
+    else if (temp > 90 && temp < 100){
+        people = people - 20;
+        
+    }
+    
+    
+    
+    /* Precipitation */
+    if (precip < 30){
+        
+        people = people;
+    }
+    
+    if (precip > 30 && precip < 50){
+        
+        people = people - 5;
+    }
+    else if (temp > 50 && precip 70){
+        people = people - 10;
+        
+    }
+    else if (temp > 70){
+        people = people - 15;
+        
+    }
+
+    
+    
+    
+    /* Humidity */
+    if (humidity < 30){
+        
+        people = people;
+    }
+    
+    if (humidity > 30 && humidity < 50){
+        
+        people = people;
+    }
+    else if (humidity > 50 && humidity 80){
+        people = people - 5;
+        
+    }
+    else if (humidity > 80){
+        people = people - 15;
+        
+    }
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    return people;
+}
+
 $(function () {/*
   $('#container').highcharts({
                              chart: {
