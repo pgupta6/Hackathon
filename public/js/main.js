@@ -17,8 +17,8 @@ var weather;
 
 
 
-var people_count_weekday [20,20,30,40,30,40,40,85,100,120,125,80,50];
-var people_count_weekend [50,50,60,70,70,80,85,100,120,150,160,100,50];
+var people_count_weekday = [20,20,30,40,30,40,40,85,100,120,125,80,50];
+var people_count_weekend = [50,50,60,70,70,80,85,100,120,150,160,100,50];
 
 
 
@@ -67,11 +67,12 @@ function count_people(temp, humidity, precip, people_count,time){
         
         people = people - 5;
     }
-    else if (temp > 50 && precip 70){
+
+    else if (precip > 50 && precip < 70){
         people = people - 10;
         
     }
-    else if (temp > 70){
+    else if (precip > 70){
         people = people - 15;
         
     }
@@ -89,7 +90,7 @@ function count_people(temp, humidity, precip, people_count,time){
         
         people = people;
     }
-    else if (humidity > 50 && humidity 80){
+    else if (humidity > 50 && humidity < 80){
         people = people - 5;
         
     }
