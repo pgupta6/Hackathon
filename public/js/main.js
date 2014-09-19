@@ -1,12 +1,8 @@
 
 
-//var url = 'http://api.wunderground.com/api/1df22023c66b0e1d/forecast10day/geolookup/conditions/q/CA/San_Jose.json';
+var url = 'http://api.wunderground.com/api/1df22023c66b0e1d/forecast10day/geolookup/conditions/q/CA/San_Jose.json';
 var weather;
-//var baseurl = 'http://api.wunderground.com/api/1df22023c66b0e1d/hourly10day/geolookup/conditions/q/TX/Austin.json';  
-var txHourly = 'http://api.wunderground.com/api/1df22023c66b0e1d/hourly10day/geolookup/conditions/q/TX/Austin.json'; 
-var nyHourly = 'http://api.wunderground.com/api/1df22023c66b0e1d/hourly10day/geolookup/conditions/q/NY/Rochester.json'; 
-var caHourly = 'http://api.wunderground.com/api/1df22023c66b0e1d/hourly10day/geolookup/conditions/q/CA/San_Jose.json'; 
-
+var hourly = 'http://api.wunderground.com/api/1df22023c66b0e1d/hourly10day/geolookup/conditions/q/TX/Austin.json'; 
  /*$.ajax({
         url: url,
         dataType: "jsonp",
@@ -199,7 +195,7 @@ function createTable(t,p,h){
     });
 }
 $(document).ready(function () {
-console.log(JSON.stringify(restCall(caHourly),undefined,2));
+console.log(JSON.stringify(restCall(hourly),undefined,2));
 $('#humid').change(function() {
         createData($('#temp').is(':checked'), $('#precip').is(':checked'),$('#humid').is(':checked'));
         normalData.unshift(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
@@ -218,31 +214,12 @@ $('#temp').change(function() {
         chartData.unshift(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
         createTable();
 });
-$('#sj').on('click',function(e){
-	e.preventDefault();
-	changeCity(caHourly);
 
-	//alert('sj');
-});
-
-$('#tx').on('click',function(e){
-	e.preventDefault();
-
-	changeCity(txHourly);
-	//alert('tx');
-});
-
-$('#ny').on('click',function(e){
-	e.preventDefault();
-
-	changeCity(nyHourly);
-	//alert('ny');
-});
 //});
 /*get the hourly forecast */
 $.ajax({
         async: true,
-        url: caHourly,
+        url: hourly,
         dataType: "jsonp",
         success: function(data)
         {
@@ -264,38 +241,4 @@ $.ajax({
 
 });
 
-function changeCity(url){
-	normalData = [];
-	chartData =[];
 
-$.ajax({
-        async: true,
-        url: url,
-        dataType: "jsonp",
-        success: function(data)
-        {
-            weather = data;
-        	console.log(JSON.stringify(data,undefined,2));
-            console.log(data);
-            _.each(data.hourly_forecast,function(obj,idx){
-            	temp.push(obj.temp.english);
-            	humidity.push(obj.humidity);
-            	precip.push(obj.wx);
-            });
-            //alert('worked');
-            createData($('#temp').is(':checked'), $('#precip').is(':checked'),$('#humid').is(':checked'));
-        	
-            chartData = chartData.splice(240,240);
-            normalData = normalData.splice(240,240);
-            /*normalData.unshift(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-            chartData.unshift(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-            normalData.unshift(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-            chartData.unshift(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-            */
-            createTable(true,true,true);
-           }
-    });
-
-
-
-}
