@@ -116,7 +116,7 @@ function createData(t,p,h){
 	var startTime = new Date().getHours();
 	_.each(temp,function(obj,idx){
 		startTime++;
-		startTime = startTime % 24;
+		startTime = startTime % 23;
 		chartData.push(count_people((t)? temp[idx]: null, (h)? humidity[idx]: null, (p)? precip[idx] : null, people_count_weekday,startTime));
        	normalData.push(count_people(null,null,null,people_count_weekday,startTime));
 				
@@ -198,14 +198,20 @@ $(document).ready(function () {
 console.log(JSON.stringify(restCall(hourly),undefined,2));
 $('#humid').change(function() {
         createData($('#temp').is(':checked'), $('#precip').is(':checked'),$('#humid').is(':checked'));
+        normalData.unshift(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+        chartData.unshift(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
         createTable();
 });
 $('#precip').on('click',function() {
         createData($('#temp').is(':checked'), $('#precip').is(':checked'),$('#humid').is(':checked'));
+        normalData.unshift(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+        chartData.unshift(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
         createTable();
 });
 $('#temp').change(function() {
         createData($('#temp').is(':checked'), $('#precip').is(':checked'),$('#humid').is(':checked'));
+        normalData.unshift(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+        chartData.unshift(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
         createTable();
 });
 
@@ -227,6 +233,8 @@ $.ajax({
             });
             //alert('worked');
             createData(true,true,true);
+            normalData.unshift(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+            chartData.unshift(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
             createTable(true,true,true);
            }
     });
